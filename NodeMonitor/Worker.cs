@@ -1,12 +1,13 @@
+using DatabaseLib.Entities;
+using Microsoft.Extensions.Hosting;
+using NodeMonitor.Business;
+using NodeMonitor.Models;
+using NodeMonitor.Test;
+using Serilog;
 using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using DatabaseLib.Entities;
-using Microsoft.Extensions.Hosting;
-using NodeMonitor.Business;
-using NodeMonitor.Test;
-using Serilog;
 
 namespace NodeMonitor
 {
@@ -30,15 +31,9 @@ namespace NodeMonitor
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            var context = new nmDBContext();
-            ThreefoldApiUriEntity NodesUri = null;
-            ThreefoldApiUriEntity FarmsUri = null;
-
-            NodesUri = context.ThreefoldApiUris
-                                .Single(n => n.Name == "AllNodes");
-
-            FarmsUri = context.ThreefoldApiUris
-                                .Single(n => n.Name == "AllFarms");
+            //var context = new nmDBContext();
+            //ThreefoldApiUriEntity NodesUri = null;
+            //NodesUri = context.ThreefoldApiUris.Single(n => n.Name == "AllNodes");
 
             while (!stoppingToken.IsCancellationRequested)
             {
@@ -55,11 +50,10 @@ namespace NodeMonitor
                 }
                 */
 
-                JsonToEntity.AddNodeHistoryItem(DeserealizeJson.CheckUriForNodeAndGetJson(NodesUri));
-
+                //JsonToEntity.AddNodeHistoryList(DeserealizeJson.CheckUriForNodeListAndGetJson(NodesUri));
 
                 Log.Information("Worker running at: {time}", DateTimeOffset.Now);
-                await Task.Delay(5000, stoppingToken);
+                await Task.Delay(600*5000, stoppingToken);
             }
         }
     }

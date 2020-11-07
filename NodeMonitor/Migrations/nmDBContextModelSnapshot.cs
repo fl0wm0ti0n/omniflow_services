@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using DatabaseLib.Models.EntityModels;
+using NodeMonitor.Models;
 
-namespace DatabaseLib.Migrations
+namespace NodeMonitor.Migrations
 {
     [DbContext(typeof(nmDBContext))]
     partial class nmDBContextModelSnapshot : ModelSnapshot
@@ -19,7 +19,7 @@ namespace DatabaseLib.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.AbonementEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.AbonementEntity", b =>
                 {
                     b.Property<int>("AbonementEntityEntityId")
                         .ValueGeneratedOnAdd()
@@ -51,7 +51,7 @@ namespace DatabaseLib.Migrations
                     b.ToTable("nodemon_Abonement");
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.AbonementSourceTypEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.AbonementSourceTypEntity", b =>
                 {
                     b.Property<int>("AbonementSourceTypEntityId")
                         .ValueGeneratedOnAdd()
@@ -71,7 +71,7 @@ namespace DatabaseLib.Migrations
                     b.ToTable("nodemon_AbonementSourceTyp");
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.AbonementTargetTypEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.AbonementTargetTypEntity", b =>
                 {
                     b.Property<int>("AbonementTargetTypEntityId")
                         .ValueGeneratedOnAdd()
@@ -91,12 +91,15 @@ namespace DatabaseLib.Migrations
                     b.ToTable("nodemon_AbonementTyp");
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.AbonementsSourcesEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.AbonementsToSourcesEntity", b =>
                 {
                     b.Property<int>("AbonementEntityId")
                         .HasColumnType("int");
 
                     b.Property<int>("AbonementSourceTypEntityId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AbonementsSourcesEntityId")
                         .HasColumnType("int");
 
                     b.HasKey("AbonementEntityId", "AbonementSourceTypEntityId");
@@ -106,30 +109,7 @@ namespace DatabaseLib.Migrations
                     b.ToTable("nodemon_AbonementsToSources");
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.AddrsEntity", b =>
-                {
-                    b.Property<int>("AddrsEntityId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("IfaceEntityIfaceId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IfaceId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AddrsEntityId");
-
-                    b.HasIndex("IfaceEntityIfaceId");
-
-                    b.ToTable("nodemon_Addrs");
-                });
-
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.FarmEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.FarmEntity", b =>
                 {
                     b.Property<int>("FarmEntityId")
                         .ValueGeneratedOnAdd()
@@ -159,7 +139,7 @@ namespace DatabaseLib.Migrations
                     b.ToTable("nodemon_Farm");
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.FarmLocation", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.FarmLocationEntity", b =>
                 {
                     b.Property<int>("FarmLocationId")
                         .ValueGeneratedOnAdd()
@@ -195,7 +175,7 @@ namespace DatabaseLib.Migrations
                     b.ToTable("nodemon_FarmLocation");
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.FarmerEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.FarmerEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -231,42 +211,23 @@ namespace DatabaseLib.Migrations
                     b.ToTable("nodemon_Farmer");
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.GatewayEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.IfaceEntity", b =>
                 {
-                    b.Property<int>("GatewayEntityId")
+                    b.Property<int>("IfaceId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Address")
+                    b.Property<string>("Addrs")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("IfaceEntityIfaceId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IfaceId")
-                        .HasColumnType("int");
-
-                    b.HasKey("GatewayEntityId");
-
-                    b.HasIndex("IfaceEntityIfaceId");
-
-                    b.ToTable("nodemon_Gateway");
-                });
-
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.IfaceEntity", b =>
-                {
-                    b.Property<int>("IfaceId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Gateway")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Macaddress")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("NodeEntityId")
@@ -279,7 +240,7 @@ namespace DatabaseLib.Migrations
                     b.ToTable("nodemon_Iface");
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.NodeEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.NodeEntity", b =>
                 {
                     b.Property<int>("NodeEntityId")
                         .ValueGeneratedOnAdd()
@@ -329,8 +290,8 @@ namespace DatabaseLib.Migrations
                     b.Property<DateTime>("Updated")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("Uptime")
-                        .HasColumnType("datetime2");
+                    b.Property<long>("Uptime")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("WgPorts")
                         .HasColumnType("nvarchar(max)");
@@ -342,14 +303,18 @@ namespace DatabaseLib.Migrations
                     b.ToTable("nodemon_Node");
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.NodeHistoryEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.NodeHistoryEntity", b =>
                 {
                     b.Property<int>("NodeHistoryEntityId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("NodeEntityId")
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint");
+
+                    b.Property<int?>("NodeEntityId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("OsVersion")
@@ -357,14 +322,10 @@ namespace DatabaseLib.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Updated")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("Uptime")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2");
+                    b.Property<long>("Uptime")
+                        .HasColumnType("bigint");
 
                     b.HasKey("NodeHistoryEntityId");
 
@@ -373,7 +334,7 @@ namespace DatabaseLib.Migrations
                     b.ToTable("nodemon_NodeHistory");
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.NodeLocationEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.NodeLocationEntity", b =>
                 {
                     b.Property<int>("NodeLocationId")
                         .ValueGeneratedOnAdd()
@@ -409,14 +370,50 @@ namespace DatabaseLib.Migrations
                     b.ToTable("nodemon_NodeLocation");
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.NodeMonSettingsEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.NodeLocationHistoryEntity", b =>
                 {
-                    b.Property<int>("NodeMonSettingsEntityId")
+                    b.Property<int>("NodeLocationId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Category")
+                    b.Property<string>("CityNode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContinentNode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CountryNode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("LatitudeNode")
+                        .HasColumnType("float");
+
+                    b.Property<double>("LongitudeNode")
+                        .HasColumnType("float");
+
+                    b.Property<int>("NodeHistoryEntityId")
+                        .HasColumnType("int");
+
+                    b.HasKey("NodeLocationId");
+
+                    b.HasIndex("NodeHistoryEntityId")
+                        .IsUnique();
+
+                    b.ToTable("nodemon_NodeLocationHistory");
+                });
+
+            modelBuilder.Entity("DatabaseLib.Entities.NodeMonScheduleDaysEntity", b =>
+                {
+                    b.Property<int>("NodeMonScheduleDaysEntityId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("DayTypNr")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -424,20 +421,108 @@ namespace DatabaseLib.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("System")
+                    b.HasKey("NodeMonScheduleDaysEntityId");
+
+                    b.ToTable("nodemon_ScheduleDays");
+                });
+
+            modelBuilder.Entity("DatabaseLib.Entities.NodeMonSchedulesEntity", b =>
+                {
+                    b.Property<int>("NodeMonSchedulesEntityId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("EndTime")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("Intervall")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ScheduleTyp")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StartTime")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("TimedIntervall")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Value")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("NodeMonSettingsEntityId");
+                    b.HasKey("NodeMonSchedulesEntityId");
 
-                    b.ToTable("nodemon_Settings");
+                    b.ToTable("nodemon_Schedules");
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.ReservedResourcesEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.NodeMonSchedulesToDaysEntity", b =>
+                {
+                    b.Property<int>("NodeMonSchedulesEntityId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NodeMonScheduleDaysEntityId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NodeMonSchedulesToDaysEntityId")
+                        .HasColumnType("int");
+
+                    b.HasKey("NodeMonSchedulesEntityId", "NodeMonScheduleDaysEntityId");
+
+                    b.HasIndex("NodeMonScheduleDaysEntityId");
+
+                    b.ToTable("nodemon_SchedulesToDays");
+                });
+
+            modelBuilder.Entity("DatabaseLib.Entities.PublicConfig", b =>
+                {
+                    b.Property<int>("PublicConfigEntityId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Gw4")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Gw6")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Ipv4")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Ipv6")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Master")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("NodeEntityId")
+                        .HasColumnType("int");
+
+                    b.Property<long>("Type")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Version")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("PublicConfigEntityId");
+
+                    b.HasIndex("NodeEntityId")
+                        .IsUnique()
+                        .HasFilter("[NodeEntityId] IS NOT NULL");
+
+                    b.ToTable("nodemon_PublicConfig");
+                });
+
+            modelBuilder.Entity("DatabaseLib.Entities.ReservedResourcesEntity", b =>
                 {
                     b.Property<int>("ReservedResourcesId")
                         .ValueGeneratedOnAdd()
@@ -453,10 +538,7 @@ namespace DatabaseLib.Migrations
                     b.Property<long>("Mru")
                         .HasColumnType("bigint");
 
-                    b.Property<int?>("NodeEntityId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("NodeHistoryEntityId")
+                    b.Property<int>("NodeEntityId")
                         .HasColumnType("int");
 
                     b.Property<long>("Sru")
@@ -465,27 +547,67 @@ namespace DatabaseLib.Migrations
                     b.HasKey("ReservedResourcesId");
 
                     b.HasIndex("NodeEntityId")
-                        .IsUnique()
-                        .HasFilter("[NodeEntityId] IS NOT NULL");
-
-                    b.HasIndex("NodeHistoryEntityId")
-                        .IsUnique()
-                        .HasFilter("[NodeHistoryEntityId] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("nodemon_ReservedResources");
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.ResourcePriceEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.ReservedResourcesHistoryEntity", b =>
+                {
+                    b.Property<int>("ReservedResourcesId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<long>("Cru")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Hru")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Mru")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("NodeHistoryEntityId")
+                        .HasColumnType("int");
+
+                    b.Property<long>("Sru")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("ReservedResourcesId");
+
+                    b.HasIndex("NodeHistoryEntityId")
+                        .IsUnique();
+
+                    b.ToTable("nodemon_ReservedResourcesHistory");
+                });
+
+            modelBuilder.Entity("DatabaseLib.Entities.ResourcePriceEntity", b =>
                 {
                     b.Property<int>("ResourcePriceId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<long>("Cru")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Currency")
+                        .HasColumnType("bigint");
+
                     b.Property<int>("FarmEntityId")
                         .HasColumnType("int");
 
-                    b.Property<long>("Prices")
+                    b.Property<long>("Hru")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Mru")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Nru")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Sru")
                         .HasColumnType("bigint");
 
                     b.HasKey("ResourcePriceId");
@@ -495,7 +617,43 @@ namespace DatabaseLib.Migrations
                     b.ToTable("nodemon_ResourcePrice");
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.ThreefoldApiUriEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.SettingsEntity", b =>
+                {
+                    b.Property<int>("SettingsEntityId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Category")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ServiceId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ServiceTyp")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("System")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("SettingsEntityId");
+
+                    b.ToTable("nodemon_Settings");
+                });
+
+            modelBuilder.Entity("DatabaseLib.Entities.ThreefoldApiUriEntity", b =>
                 {
                     b.Property<int>("ThreefoldApiUriEntityId")
                         .ValueGeneratedOnAdd()
@@ -522,7 +680,7 @@ namespace DatabaseLib.Migrations
                     b.ToTable("nodemon_ThreefoldApiUriList");
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.TokenHistoryEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.TokenHistoryEntity", b =>
                 {
                     b.Property<int>("TokenHistoryEntityId")
                         .ValueGeneratedOnAdd()
@@ -545,7 +703,7 @@ namespace DatabaseLib.Migrations
                     b.ToTable("nodemon_TokenHistory");
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.TotalResourcesEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.TotalResourcesEntity", b =>
                 {
                     b.Property<int>("TotalResourcesId")
                         .ValueGeneratedOnAdd()
@@ -561,10 +719,7 @@ namespace DatabaseLib.Migrations
                     b.Property<long>("Mru")
                         .HasColumnType("bigint");
 
-                    b.Property<int?>("NodeEntityId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("NodeHistoryId")
+                    b.Property<int>("NodeEntityId")
                         .HasColumnType("int");
 
                     b.Property<long>("Sru")
@@ -573,17 +728,42 @@ namespace DatabaseLib.Migrations
                     b.HasKey("TotalResourcesId");
 
                     b.HasIndex("NodeEntityId")
-                        .IsUnique()
-                        .HasFilter("[NodeEntityId] IS NOT NULL");
-
-                    b.HasIndex("NodeHistoryId")
-                        .IsUnique()
-                        .HasFilter("[NodeHistoryId] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("nodemon_TotalResources");
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.UsedResourcesEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.TotalResourcesHistoryEntity", b =>
+                {
+                    b.Property<int>("TotalResourcesId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<long>("Cru")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Hru")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Mru")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("NodeHistoryId")
+                        .HasColumnType("int");
+
+                    b.Property<long>("Sru")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("TotalResourcesId");
+
+                    b.HasIndex("NodeHistoryId")
+                        .IsUnique();
+
+                    b.ToTable("nodemon_TotalResourcesHistory");
+                });
+
+            modelBuilder.Entity("DatabaseLib.Entities.UsedResourcesEntity", b =>
                 {
                     b.Property<int>("UsedResourcesId")
                         .ValueGeneratedOnAdd()
@@ -602,9 +782,6 @@ namespace DatabaseLib.Migrations
                     b.Property<int?>("NodeEntityId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("NodeHistoryEntityId")
-                        .HasColumnType("int");
-
                     b.Property<long>("Sru")
                         .HasColumnType("bigint");
 
@@ -614,14 +791,40 @@ namespace DatabaseLib.Migrations
                         .IsUnique()
                         .HasFilter("[NodeEntityId] IS NOT NULL");
 
-                    b.HasIndex("NodeHistoryEntityId")
-                        .IsUnique()
-                        .HasFilter("[NodeHistoryEntityId] IS NOT NULL");
-
                     b.ToTable("nodemon_UsedResources");
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.WalletAddressEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.UsedResourcesHistoryEntity", b =>
+                {
+                    b.Property<int>("UsedResourcesId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<long>("Cru")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Hru")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("Mru")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("NodeHistoryEntityId")
+                        .HasColumnType("int");
+
+                    b.Property<long>("Sru")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("UsedResourcesId");
+
+                    b.HasIndex("NodeHistoryEntityId")
+                        .IsUnique();
+
+                    b.ToTable("nodemon_UsedResourcesHistory");
+                });
+
+            modelBuilder.Entity("DatabaseLib.Entities.WalletAddressEntity", b =>
                 {
                     b.Property<int>("WalletAddressId")
                         .ValueGeneratedOnAdd()
@@ -656,7 +859,7 @@ namespace DatabaseLib.Migrations
                     b.ToTable("nodemon_WalletAddress");
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.WorkloadsEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.WorkloadsEntity", b =>
                 {
                     b.Property<int>("WorkloadsEntityId")
                         .ValueGeneratedOnAdd()
@@ -701,165 +904,201 @@ namespace DatabaseLib.Migrations
                     b.ToTable("nodemon_Workloads");
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.AbonementEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.AbonementEntity", b =>
                 {
-                    b.HasOne("NodeMonitor.Models.EntityModels.AbonementTargetTypEntity", "AbonementTargetTyp")
+                    b.HasOne("DatabaseLib.Entities.AbonementTargetTypEntity", "AbonementTargetTyp")
                         .WithMany("Abonements")
                         .HasForeignKey("AbonementTargetTypEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.AbonementsSourcesEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.AbonementsToSourcesEntity", b =>
                 {
-                    b.HasOne("NodeMonitor.Models.EntityModels.AbonementEntity", "AbonementEntity")
-                        .WithMany("AbonementsSources")
+                    b.HasOne("DatabaseLib.Entities.AbonementEntity", "AbonementEntity")
+                        .WithMany("AbonementsToSources")
                         .HasForeignKey("AbonementEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NodeMonitor.Models.EntityModels.AbonementSourceTypEntity", "AbonementSourceTyp")
-                        .WithMany("AbonementsSources")
+                    b.HasOne("DatabaseLib.Entities.AbonementSourceTypEntity", "AbonementSourceTyp")
+                        .WithMany("AbonementsToSources")
                         .HasForeignKey("AbonementSourceTypEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.AddrsEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.FarmLocationEntity", b =>
                 {
-                    b.HasOne("NodeMonitor.Models.EntityModels.IfaceEntity", "IfaceEntity")
-                        .WithMany("Addrs")
-                        .HasForeignKey("IfaceEntityIfaceId");
-                });
-
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.FarmLocation", b =>
-                {
-                    b.HasOne("NodeMonitor.Models.EntityModels.FarmEntity", "FarmEntity")
+                    b.HasOne("DatabaseLib.Entities.FarmEntity", "FarmEntity")
                         .WithOne("Location")
-                        .HasForeignKey("NodeMonitor.Models.EntityModels.FarmLocation", "FarmEntityId")
+                        .HasForeignKey("DatabaseLib.Entities.FarmLocationEntity", "FarmEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.FarmerEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.FarmerEntity", b =>
                 {
-                    b.HasOne("NodeMonitor.Models.EntityModels.WalletAddressEntity", "WalletAddresses")
+                    b.HasOne("DatabaseLib.Entities.WalletAddressEntity", "WalletAddresses")
                         .WithMany()
                         .HasForeignKey("WalletAddressesWalletAddressId");
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.GatewayEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.IfaceEntity", b =>
                 {
-                    b.HasOne("NodeMonitor.Models.EntityModels.IfaceEntity", "IfaceEntity")
-                        .WithMany("Gateway")
-                        .HasForeignKey("IfaceEntityIfaceId");
-                });
-
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.IfaceEntity", b =>
-                {
-                    b.HasOne("NodeMonitor.Models.EntityModels.NodeEntity", "NodeEntity")
+                    b.HasOne("DatabaseLib.Entities.NodeEntity", "NodeEntity")
                         .WithMany("Interfaces")
                         .HasForeignKey("NodeEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.NodeEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.NodeEntity", b =>
                 {
-                    b.HasOne("NodeMonitor.Models.EntityModels.FarmEntity", "FarmEntity")
+                    b.HasOne("DatabaseLib.Entities.FarmEntity", "FarmEntity")
                         .WithMany("Nodes")
                         .HasForeignKey("FarmEntityId");
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.NodeHistoryEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.NodeHistoryEntity", b =>
                 {
-                    b.HasOne("NodeMonitor.Models.EntityModels.NodeEntity", "NodeEntity")
+                    b.HasOne("DatabaseLib.Entities.NodeEntity", "NodeEntity")
                         .WithMany("NodeHistory")
                         .HasForeignKey("NodeEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.NodeLocationEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.NodeLocationEntity", b =>
                 {
-                    b.HasOne("NodeMonitor.Models.EntityModels.NodeEntity", "NodeEntity")
-                        .WithOne("NodeLocation")
-                        .HasForeignKey("NodeMonitor.Models.EntityModels.NodeLocationEntity", "NodeEntityId")
+                    b.HasOne("DatabaseLib.Entities.NodeEntity", "NodeEntity")
+                        .WithOne("Location")
+                        .HasForeignKey("DatabaseLib.Entities.NodeLocationEntity", "NodeEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.ReservedResourcesEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.NodeLocationHistoryEntity", b =>
                 {
-                    b.HasOne("NodeMonitor.Models.EntityModels.NodeEntity", "NodeEntity")
-                        .WithOne("ReservedResources")
-                        .HasForeignKey("NodeMonitor.Models.EntityModels.ReservedResourcesEntity", "NodeEntityId");
-
-                    b.HasOne("NodeMonitor.Models.EntityModels.NodeHistoryEntity", "NodeHistory")
-                        .WithOne("ReservedResources")
-                        .HasForeignKey("NodeMonitor.Models.EntityModels.ReservedResourcesEntity", "NodeHistoryEntityId");
+                    b.HasOne("DatabaseLib.Entities.NodeHistoryEntity", "NodeHistoryEntity")
+                        .WithOne("Location")
+                        .HasForeignKey("DatabaseLib.Entities.NodeLocationHistoryEntity", "NodeHistoryEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.ResourcePriceEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.NodeMonSchedulesToDaysEntity", b =>
                 {
-                    b.HasOne("NodeMonitor.Models.EntityModels.FarmEntity", "FarmEntity")
-                        .WithMany("ResourcePriceCollection")
+                    b.HasOne("DatabaseLib.Entities.NodeMonScheduleDaysEntity", "NodeMonScheduleDaysEntity")
+                        .WithMany("SchedulesToDays")
+                        .HasForeignKey("NodeMonScheduleDaysEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DatabaseLib.Entities.NodeMonSchedulesEntity", "NodeMonSchedulesEntity")
+                        .WithMany("SchedulesToDays")
+                        .HasForeignKey("NodeMonSchedulesEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DatabaseLib.Entities.PublicConfig", b =>
+                {
+                    b.HasOne("DatabaseLib.Entities.NodeEntity", "NodeEntity")
+                        .WithOne("PublicConfigs")
+                        .HasForeignKey("DatabaseLib.Entities.PublicConfig", "NodeEntityId");
+                });
+
+            modelBuilder.Entity("DatabaseLib.Entities.ReservedResourcesEntity", b =>
+                {
+                    b.HasOne("DatabaseLib.Entities.NodeEntity", "NodeEntity")
+                        .WithOne("ReservedResources")
+                        .HasForeignKey("DatabaseLib.Entities.ReservedResourcesEntity", "NodeEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DatabaseLib.Entities.ReservedResourcesHistoryEntity", b =>
+                {
+                    b.HasOne("DatabaseLib.Entities.NodeHistoryEntity", "NodeHistory")
+                        .WithOne("ReservedResources")
+                        .HasForeignKey("DatabaseLib.Entities.ReservedResourcesHistoryEntity", "NodeHistoryEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DatabaseLib.Entities.ResourcePriceEntity", b =>
+                {
+                    b.HasOne("DatabaseLib.Entities.FarmEntity", "FarmEntity")
+                        .WithMany("ResourcePrices")
                         .HasForeignKey("FarmEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.TokenHistoryEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.TokenHistoryEntity", b =>
                 {
-                    b.HasOne("NodeMonitor.Models.EntityModels.NodeEntity", "NodeEntity")
+                    b.HasOne("DatabaseLib.Entities.NodeEntity", "NodeEntity")
                         .WithMany("TokenHistory")
                         .HasForeignKey("NodeEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.TotalResourcesEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.TotalResourcesEntity", b =>
                 {
-                    b.HasOne("NodeMonitor.Models.EntityModels.NodeEntity", "NodeEntity")
+                    b.HasOne("DatabaseLib.Entities.NodeEntity", "NodeEntity")
                         .WithOne("TotalResources")
-                        .HasForeignKey("NodeMonitor.Models.EntityModels.TotalResourcesEntity", "NodeEntityId");
-
-                    b.HasOne("NodeMonitor.Models.EntityModels.NodeHistoryEntity", "NodeHistory")
-                        .WithOne("TotalResources")
-                        .HasForeignKey("NodeMonitor.Models.EntityModels.TotalResourcesEntity", "NodeHistoryId");
+                        .HasForeignKey("DatabaseLib.Entities.TotalResourcesEntity", "NodeEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.UsedResourcesEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.TotalResourcesHistoryEntity", b =>
                 {
-                    b.HasOne("NodeMonitor.Models.EntityModels.NodeEntity", "NodeEntity")
-                        .WithOne("UsedResources")
-                        .HasForeignKey("NodeMonitor.Models.EntityModels.UsedResourcesEntity", "NodeEntityId");
-
-                    b.HasOne("NodeMonitor.Models.EntityModels.NodeHistoryEntity", "NodeHistory")
-                        .WithOne("UsedResources")
-                        .HasForeignKey("NodeMonitor.Models.EntityModels.UsedResourcesEntity", "NodeHistoryEntityId");
+                    b.HasOne("DatabaseLib.Entities.NodeHistoryEntity", "NodeHistory")
+                        .WithOne("TotalResources")
+                        .HasForeignKey("DatabaseLib.Entities.TotalResourcesHistoryEntity", "NodeHistoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.WalletAddressEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.UsedResourcesEntity", b =>
                 {
-                    b.HasOne("NodeMonitor.Models.EntityModels.FarmEntity", "FarmEntity")
-                        .WithMany("WalletAddressesCollection")
+                    b.HasOne("DatabaseLib.Entities.NodeEntity", "NodeEntity")
+                        .WithOne("UsedResources")
+                        .HasForeignKey("DatabaseLib.Entities.UsedResourcesEntity", "NodeEntityId");
+                });
+
+            modelBuilder.Entity("DatabaseLib.Entities.UsedResourcesHistoryEntity", b =>
+                {
+                    b.HasOne("DatabaseLib.Entities.NodeHistoryEntity", "NodeHistory")
+                        .WithOne("UsedResources")
+                        .HasForeignKey("DatabaseLib.Entities.UsedResourcesHistoryEntity", "NodeHistoryEntityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DatabaseLib.Entities.WalletAddressEntity", b =>
+                {
+                    b.HasOne("DatabaseLib.Entities.FarmEntity", "FarmEntity")
+                        .WithMany("WalletAddresses")
                         .HasForeignKey("FarmEntityId");
 
-                    b.HasOne("NodeMonitor.Models.EntityModels.FarmerEntity", null)
+                    b.HasOne("DatabaseLib.Entities.FarmerEntity", null)
                         .WithMany("WalletAddressesCollection")
                         .HasForeignKey("FarmerEntityId");
 
-                    b.HasOne("NodeMonitor.Models.EntityModels.TokenHistoryEntity", "TokenHistoryEntity")
+                    b.HasOne("DatabaseLib.Entities.TokenHistoryEntity", "TokenHistoryEntity")
                         .WithMany("WalletAddress")
                         .HasForeignKey("TokenHistoryEntityId");
                 });
 
-            modelBuilder.Entity("NodeMonitor.Models.EntityModels.WorkloadsEntity", b =>
+            modelBuilder.Entity("DatabaseLib.Entities.WorkloadsEntity", b =>
                 {
-                    b.HasOne("NodeMonitor.Models.EntityModels.NodeEntity", "NodeEntity")
+                    b.HasOne("DatabaseLib.Entities.NodeEntity", "NodeEntity")
                         .WithOne("Workloads")
-                        .HasForeignKey("NodeMonitor.Models.EntityModels.WorkloadsEntity", "NodeEntityId")
+                        .HasForeignKey("DatabaseLib.Entities.WorkloadsEntity", "NodeEntityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

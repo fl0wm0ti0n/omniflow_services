@@ -14,6 +14,7 @@ using Newtonsoft.Json.Converters;
 using J = Newtonsoft.Json.JsonPropertyAttribute;
 using R = Newtonsoft.Json.Required;
 using N = Newtonsoft.Json.NullValueHandling;
+using AutoMapper.Configuration.Annotations;
 
 namespace NodeMonitor.Models.JsonModels
 {
@@ -32,14 +33,14 @@ namespace NodeMonitor.Models.JsonModels
         [J("total_resources")] public TotalResources TotalResources { get; set; }
         [J("used_resources")] public UsedResources UsedResources { get; set; }
         [J("reserved_resources")] public ReservedResources ReservedResources { get; set; }
+        [J("public_config")] public PublicConfig PublicConfigs { get; set; }
         [J("workloads")] public Workloads Workloads { get; set; }
         [J("proofs")] public string Proofs { get; set; }
         [J("ifaces")] public List<Iface> Ifaces { get; set; }
-        [J("public_config")] public string PublicConfig { get; set; }
         [J("free_to_use")] public bool FreeToUse { get; set; }
         [J("approved")] public bool Approved { get; set; }
         [J("public_key_hex")] public string PublicKeyHex { get; set; }
-        [J("wg_ports")] public string WgPorts { get; set; }
+        [J("wg_ports")] public List<long> WgPorts { get; set; }
     }
 
     public class Iface
@@ -81,6 +82,17 @@ namespace NodeMonitor.Models.JsonModels
         [J("mru")] public long Mru { get; set; }
         [J("hru")] public long Hru { get; set; }
         [J("sru")] public long Sru { get; set; }
+    }
+
+    public class PublicConfig
+    {
+        [J("master")] public string Master { get; set; }
+        [J("type")] public long Type { get; set; }
+        [J("ipv4")] public string Ipv4 { get; set; }
+        [J("ipv6")] public string Ipv6 { get; set; }
+        [J("gw4")] public string Gw4 { get; set; }
+        [J("gw6")] public string Gw6 { get; set; }
+        [J("version")] public long Version { get; set; }
     }
 
     public class Workloads

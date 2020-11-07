@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper.Configuration.Annotations;
 
 namespace DatabaseLib.Entities
 {
@@ -21,9 +22,10 @@ namespace DatabaseLib.Entities
         [Required]
         public string OsVersion { get; set; }
         [Required]
-        public long Updated { get; set; }
+        public DateTime Updated { get; set; }
         [Required]
-        public long Uptime { get; set; }
+        [Column(TypeName = "bigint")]
+        public TimeSpan Uptime { get; set; }
         public NodeLocationHistoryEntity Location { get; set; }
         public TotalResourcesHistoryEntity TotalResources { get; set; }
         public UsedResourcesHistoryEntity UsedResources { get; set; }

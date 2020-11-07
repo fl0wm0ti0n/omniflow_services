@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper.Configuration.Annotations;
 
 namespace DatabaseLib.Entities
 {
@@ -23,18 +24,19 @@ namespace DatabaseLib.Entities
         public int? FarmEntityId { get; set; }
         public FarmEntity FarmEntity { get; set; }
         public string OsVersion { get; set; }
-        public long Created { get; set; }
-        public long Updated { get; set; }
-        public long Uptime { get; set; }
+        public DateTime Created { get; set; }
+        public DateTime Updated { get; set; }
+        [Column(TypeName = "bigint")]
+        public TimeSpan Uptime { get; set; }
         public string Address { get; set; }
         public NodeLocationEntity Location { get; set; }
         public TotalResourcesEntity TotalResources { get; set; }
         public ReservedResourcesEntity ReservedResources { get; set; }
         public UsedResourcesEntity UsedResources { get; set; }
+        public PublicConfigEntity PublicConfigs { get; set; }
         public WorkloadsEntity Workloads { get; set; }
         public string Proofs { get; set; }
         public ICollection<IfaceEntity> Interfaces { get; set; }
-        public string PublicConfig { get; set; }
         public bool FreeToUse { get; set; }
         public bool Approved { get; set; }
         public string PublicKeyHex { get; set; }
@@ -52,34 +54,10 @@ namespace DatabaseLib.Entities
         public string Name { get; set; }
         public string Addrs { get; set; }
         public string Gateway { get; set; }
-        //public ICollection<AddrsEntity> Addrs { get; set; }
-        //public ICollection<GatewayEntity> Gateway { get; set; }
         public string Macaddress { get; set; }
         public int NodeEntityId { get; set; }
         public NodeEntity NodeEntity { get; set; }
     }
-
-   // [Table("nodemon_Addrs")]
-   // public class AddrsEntity
-   // {
-   //     [Key]
-   //     [Required]
-   //     public int AddrsEntityId { get; set; }
-   //     public string Address { get; set; }
-   //     public int IfaceId { get; set; }
-   //     public IfaceEntity IfaceEntity { get; set; }
-   // }
-   // 
-   // [Table("nodemon_Gateway")]
-   // public class GatewayEntity
-   // {
-   //     [Key]
-   //     [Required]
-   //     public int GatewayEntityId { get; set; }
-   //     public string Address { get; set; }
-   //     public int IfaceId { get; set; }
-   //     public IfaceEntity IfaceEntity { get; set; }
-   // }
 
     [Table("nodemon_NodeLocation")]
     public class NodeLocationEntity
@@ -147,6 +125,24 @@ namespace DatabaseLib.Entities
        public int? NodeEntityId { get; set; }
        public NodeEntity NodeEntity { get; set; }
    }
+
+    [Table("nodemon_PublicConfig")]
+    public class PublicConfigEntity
+    {
+        [Key]
+        [Required]
+        public int PublicConfigEntityId { get; set; }
+        public string Master { get; set; }
+        public long Type { get; set; }
+        public string Ipv4 { get; set; }
+        public string Ipv6 { get; set; }
+        public string Gw4 { get; set; }
+        public string Gw6 { get; set; }
+        public long Version { get; set; }
+        [ForeignKey("NodeEntity")]
+        public int? NodeEntityId { get; set; }
+        public NodeEntity NodeEntity { get; set; }
+    }
 
     [Table("nodemon_Workloads")]
     public class WorkloadsEntity

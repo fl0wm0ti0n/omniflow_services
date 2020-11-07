@@ -1,24 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Net;
-using System.IO;
-using Microsoft.Extensions.Logging;
-using Serilog;
-using Serilog.Events;
-using DatabaseLib.Entities;
+﻿using DatabaseLib.Entities;
 using NodeMonitor.Models.JsonModels;
+using Serilog;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
 
 namespace NodeMonitor.Business
 {
     public static class DeserealizeJson
     {
         #region json deserealization
-        public static JsonNode CheckUriForNodeAndGetJson(ThreefoldApiUriEntity UriString)
+
+        public static JsonNode CheckUriForNodeAndGetJson(ThreefoldApiUriEntity UriStringObj)
         {
             JsonNode returnobject = null;
-
-            Log.Warning("ChoosenUri: " + UriString.Uri);
+            string UriString = UriStringObj.Uri;
             if (CheckUri(UriString) != null)
             {
                 returnobject = JsonNode.FromJson(CheckUri(UriString));
@@ -26,23 +23,35 @@ namespace NodeMonitor.Business
             return returnobject;
         }
 
-        public static List<JsonNode> CheckUriForNodeListAndGetJson(ThreefoldApiUriEntity UriString)
+        public static List<JsonNode> CheckUriForNodeListAndGetJson(ThreefoldApiUriEntity UriStringObj)
         {
-            List<JsonNode> returnobject = null;
+            List<JsonNode> returnobject = new List<JsonNode>();
 
-            Log.Warning("ChoosenUri: " + UriString.Uri);
-            if (CheckUri(UriString) != null)
+            string UriString = UriStringObj.Uri + "?page=";
+
+            int i = 1;
+            while (true)
             {
-                returnobject = JsonNode.FromJsonList(CheckUri(UriString));
+                string finalUri = UriString + i;
+
+                string checkreturn = CheckUri(finalUri);
+                if (checkreturn.Length > 5)
+                {
+                    returnobject.AddRange(JsonNode.FromJsonList(checkreturn));
+                }
+                else
+                {
+                    break;
+                }
+                i++;
             }
             return returnobject;
         }
 
-        public static JsonFarm CheckUriForFarmAndGetJson(ThreefoldApiUriEntity UriString)
+        public static JsonFarm CheckUriForFarmAndGetJson(ThreefoldApiUriEntity UriStringObj)
         {
             JsonFarm returnobject = null;
-
-            Log.Warning("ChoosenUri: " + UriString.Uri);
+            string UriString = UriStringObj.Uri;
             if (CheckUri(UriString) != null)
             {
                 returnobject = JsonFarm.FromJson(CheckUri(UriString));
@@ -50,26 +59,41 @@ namespace NodeMonitor.Business
             return returnobject;
         }
 
-        public static List<JsonFarm> CheckUriForFarmListAndGetJson(ThreefoldApiUriEntity UriString)
+        public static List<JsonFarm> CheckUriForFarmListAndGetJson(ThreefoldApiUriEntity UriStringObj)
         {
-            List<JsonFarm> returnobject = null;
+            List<JsonFarm> returnobject = new List<JsonFarm>();
+            string UriString = UriStringObj.Uri + "?page=";
 
-            Log.Warning("ChoosenUri: " + UriString.Uri);
-            if (CheckUri(UriString) != null)
+            int i = 1;
+            while (true)
             {
-                returnobject = JsonFarm.FromJsonList(CheckUri(UriString));
+                string finalUri = UriString + i;
 
+                string checkreturn = CheckUri(finalUri);
+                if (checkreturn.Length > 5)
+                {
+                    returnobject.AddRange(JsonFarm.FromJsonList(checkreturn));
+                }
+                else
+                {
+                    break;
+                }
+                i++;
             }
             return returnobject;
         }
 
-        public static string CheckUri(ThreefoldApiUriEntity UriString)
+        #endregion json deserealization
+
+        #region Check  Uri and Get Data
+
+        public static string CheckUri(string UriString)
         {
             Uri outUri;
-            if (Uri.TryCreate(UriString.Uri, UriKind.Absolute, out outUri)
+            if (Uri.TryCreate(UriString, UriKind.Absolute, out outUri)
                 && (outUri.Scheme == Uri.UriSchemeHttp || outUri.Scheme == Uri.UriSchemeHttps))
             {
-                return Get(UriString.Uri);
+                return Get(UriString);
             }
             else
             {
@@ -77,9 +101,11 @@ namespace NodeMonitor.Business
                 return null;
             }
         }
-        #endregion
+
+        #endregion Check  Uri and Get Data
 
         #region Get Data
+
         public static string Get(string uri)
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
@@ -92,6 +118,7 @@ namespace NodeMonitor.Business
                 return reader.ReadToEnd();
             }
         }
-        #endregion
+
+        #endregion Get Data
     }
 }

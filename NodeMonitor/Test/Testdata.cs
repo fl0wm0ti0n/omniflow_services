@@ -1,8 +1,9 @@
-﻿using System;
+﻿using DatabaseLib.Entities;
+using NodeMonitor.Models;
+using Serilog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Serilog;
-using DatabaseLib.Entities;
 
 namespace NodeMonitor.Test
 {
@@ -12,24 +13,24 @@ namespace NodeMonitor.Test
         {
             try
             {
+                Log.Information("create Testdata ...");
                 using (var context = new nmDBContext())
                 {
-                   var newUris = UriTestdata();
-
-                    foreach (var item in newUris)
+                    //newUris.ForEach(n => context.ThreefoldApiUris.Add(n));
+                    foreach (var item in UriTestdata())
                     {
-                        if (item != null)
+                        if (!context.ThreefoldApiUris.Any(f => f.Uri == item.Uri) || (!context.ThreefoldApiUris.Any()))
                         {
                             context.Update(item);
                             context.SaveChanges();
-                            continue;
                         }
                         else
                         {
-                            Log.Warning("no new Testdata");
-                        }
+                            Log.Warning("Testdata " + item.Name + " from category 'Uri' is already saved in Database");
+                        };
                     }
                 }
+                Log.Information("... success");
                 return true;
             }
             catch (Exception e)
@@ -43,12 +44,23 @@ namespace NodeMonitor.Test
         {
             try
             {
+                Log.Information("delete Testdata ...");
                 using (var context = new nmDBContext())
                 {
-                    var oldUris = UriTestdata();
-                    context.RemoveRange(oldUris);
-                    context.SaveChanges();
+                    foreach (var item in UriTestdata())
+                    {
+                        if (context.ThreefoldApiUris.Any(f => f.Uri == item.Uri) || (context.ThreefoldApiUris.Any()))
+                        {
+                            context.Remove(item);
+                            context.SaveChanges();
+                        }
+                        else
+                        {
+                            Log.Warning("Testdata " + item.Name + " from category 'Uri' is not found it Database");
+                        };
+                    }
                 }
+                Log.Information("... success");
                 return true;
             }
             catch (Exception e)
@@ -58,82 +70,56 @@ namespace NodeMonitor.Test
             }
         }
 
-        public static IList<ThreefoldApiUriEntity> UriTestdata()
+        public static List<ThreefoldApiUriEntity> UriTestdata()
         {
-            try
+            using (var context = new nmDBContext())
             {
-                IList<ThreefoldApiUriEntity> modifiedUris = null;
-
-                using (var context = new nmDBContext())
+                List<ThreefoldApiUriEntity> modifiedUris = new List<ThreefoldApiUriEntity>()
                 {
-
-                    if (!context.ThreefoldApiUris.Any(f => f.Uri == "https://explorer.grid.tf/explorer/nodes/74cu7Tf2N6h1MfCYRVJTP5LTPjZZ5ZWsyfExd5CehRAM") || (!context.ThreefoldApiUris.Any()))
+                    new ThreefoldApiUriEntity()
                     {
-                        var modifiedUri = new ThreefoldApiUriEntity()
-                        {
-                            Name = "omniflowNode-74cu7Tf2N6h1MfCYRVJTP5LTPjZZ5ZWsyfExd5CehRAM",
-                            Typ = "Nodes",
-                            List = false,
-                            Uri = "https://explorer.grid.tf/explorer/nodes/74cu7Tf2N6h1MfCYRVJTP5LTPjZZ5ZWsyfExd5CehRAM"
-                        };
-                        modifiedUris.Add(modifiedUri);
-                    };
-
-                    if (!context.ThreefoldApiUris.Any(f => f.Uri == "https://explorer.grid.tf/explorer/farms/1") || (!context.ThreefoldApiUris.Any()))
+                        Name = "omniflowFarm-173599",
+                        Typ = "Farms",
+                        List = false,
+                        Uri = "https://explorer.grid.tf/explorer/farms/173599"
+                    },
+                    new ThreefoldApiUriEntity()
                     {
-                        var modifiedUri = new ThreefoldApiUriEntity()
-                        {
-                            Name = "omniflowFarm-1",
-                            Typ = "Farms",
-                            List = false,
-                            Uri = "https://explorer.grid.tf/explorer/farms/1"
-                        };
-                        modifiedUris.Add(modifiedUri);
-                    };
-
-                    if (!context.ThreefoldApiUris.Any(f => f.Uri == "https://explorer.grid.tf/explorer/farms/173599") || (!context.ThreefoldApiUris.Any()))
+                        Name = "Farm-1",
+                        Typ = "Farms",
+                        List = false,
+                        Uri = "https://explorer.grid.tf/explorer/farms/1"
+                    },
+                    new ThreefoldApiUriEntity()
                     {
-                        var modifiedUri = new ThreefoldApiUriEntity()
-                        {
-                            Name = "omniflowFarm-173599",
-                            Typ = "Farms",
-                            List = false,
-                            Uri = "https://explorer.grid.tf/explorer/farms/173599"
-                        };
-                        modifiedUris.Add(modifiedUri);
-                    };
-
-                    if (!context.ThreefoldApiUris.Any(f => f.Uri == "https://explorer.grid.tf/explorer/farms") || (!context.ThreefoldApiUris.Any()))
+                        Name = "omniflowNode-6epBaRjPkLrb3ViYqi2JxTx6ALbNNeYysTuw5MskwWkX",
+                        Typ = "Nodes",
+                        List = false,
+                        Uri = "https://explorer.grid.tf/explorer/nodes/6epBaRjPkLrb3ViYqi2JxTx6ALbNNeYysTuw5MskwWkX"
+                    },
+                    new ThreefoldApiUriEntity()
                     {
-                        var modifiedUri = new ThreefoldApiUriEntity()
-                        {
-                            Name = "AllFarms",
-                            Typ = "Farms",
-                            List = true,
-                            Uri = "https://explorer.grid.tf/explorer/farms"
-                        };
-                        modifiedUris.Add(modifiedUri);
-                    };
-
-                    if (!context.ThreefoldApiUris.Any(f => f.Uri == "https://explorer.grid.tf/explorer/nodes") || (!context.ThreefoldApiUris.Any()))
+                        Name = "omniflowNode-Assy3QYdGxBfubySThkkmkx9nnXYogmkujWTFyesqoQf",
+                        Typ = "Nodes",
+                        List = false,
+                        Uri = "https://explorer.grid.tf/explorer/nodes/Assy3QYdGxBfubySThkkmkx9nnXYogmkujWTFyesqoQf"
+                    },
+                    new ThreefoldApiUriEntity()
                     {
-                        var modifiedUri = new ThreefoldApiUriEntity()
-                        {
-                            Name = "AllNodes",
-                            Typ = "Nodes",
-                            List = true,
-                            Uri = "https://explorer.grid.tf/explorer/nodes"
-                        };
-                        modifiedUris.Add(modifiedUri);
-                    };
-                }
-
+                        Name = "omniflowNode-7fpLSJBfRL31RXjSxXKTz4zAfVnZdEmAJW3cfRepzFyx",
+                        Typ = "Nodes",
+                        List = false,
+                        Uri = "https://explorer.grid.tf/explorer/nodes/7fpLSJBfRL31RXjSxXKTz4zAfVnZdEmAJW3cfRepzFyx"
+                    },
+                    new ThreefoldApiUriEntity()
+                    {
+                        Name = "omniflowNode-8WZRD4ToUuCVYgh46uujwXcnZw9ZXTz1Z6SAKJHzhsJY",
+                        Typ = "Nodes",
+                        List = false,
+                        Uri = "https://explorer.grid.tf/explorer/nodes/8WZRD4ToUuCVYgh46uujwXcnZw9ZXTz1Z6SAKJHzhsJY"
+                    }
+                };
                 return modifiedUris;
-            }
-            catch (Exception e)
-            {
-                Log.Warning("Something went wrong by Creating TestUris", e);
-                return null;
             }
         }
     }

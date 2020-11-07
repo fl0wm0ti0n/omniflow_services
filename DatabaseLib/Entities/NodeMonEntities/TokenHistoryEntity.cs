@@ -21,7 +21,5 @@ namespace DatabaseLib.Entities
         public DateTime PayOutDate { get; set; }
         [Required]
         public int NodeEntityId { get; set; }
-        [Required]
-        public NodeEntity NodeEntity { get; set; }
     }
 }
