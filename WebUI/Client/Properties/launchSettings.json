@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "WebUI.Client": {
+      "commandName": "Project",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

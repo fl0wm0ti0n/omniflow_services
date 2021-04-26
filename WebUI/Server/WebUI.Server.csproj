@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>2361b33a-5c6b-4ac5-aeb3-1d7ba4dedea3</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileRunArguments>-p 55005:55005</DockerfileRunArguments>
+    <OutputType>Exe</OutputType>
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Services\**" />
+    <Content Remove="Services\**" />
+    <EmbeddedResource Remove="Services\**" />
+    <None Remove="Services\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.Server" Version="3.2.0-preview1.20073.1" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="3.1.5" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.3" />
+    <PackageReference Include="Serilog.AspNetCore" Version="4.1.0" />
+    <PackageReference Include="Toolbelt.Blazor.LoadingBar" Version="10.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\CommonLib\CommonLib.csproj" />
+    <ProjectReference Include="..\..\DataTransferObjects\DataTransferObjects.csproj" />
+    <ProjectReference Include="..\..\InterfacesLib\InterfacesLib.csproj" />
+    <ProjectReference Include="..\Client\WebUI.Client.csproj" />
+    <ProjectReference Include="..\Shared\WebUI.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="tmp\" />
+  </ItemGroup>
+
+</Project>
