@@ -1,0 +1,1 @@
+C:\WINDOWS\system32> docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Passw0rd" ` -p 1433:1433 --name mssql-1 -h mssql-1 ` -d mcr.microsoft.com/mssql/server:latest

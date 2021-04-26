@@ -13,6 +13,7 @@ COPY ["NodeMonitor/NodeMonitor.csproj", "NodeMonitor/"]
 COPY ["DatabaseLib/DatabaseLib.csproj", "DatabaseLib/"]
 COPY ["InterfacesLib/InterfacesLib.csproj", "InterfacesLib/"]
 COPY ["DataTransferObjects/DataTransferObjects.csproj", "DataTransferObjects/"]
+COPY ["CommonLib/CommonLib.csproj", "CommonLib/"]
 RUN dotnet restore "NodeMonitor/NodeMonitor.csproj"
 COPY . .
 WORKDIR "/src/nodemon"

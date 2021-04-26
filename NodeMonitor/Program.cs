@@ -15,6 +15,8 @@ using NodeMonitor.Models;
 using System.Net;
 using NodeMonitor.Controller;
 using AutoMapper;
+using CommonLib;
+using CommonLib.Toolsets;
 
 namespace NodeMonitor
 {
@@ -30,15 +32,19 @@ namespace NodeMonitor
             logger.BuildLog();
 
 
+            // read out settings for retry connection to db
+            int dbConnectretryNumber = AppConfig.ReadSetting<int>("Database_ConnectRetryNumber");
+            int dbConnectretryGap = AppConfig.ReadSetting<int>("Database_ConnectRetryGapInSeconds");
             // Check DB Connection and migrate if necessary
             try
             {
+                //await context.Database.EnsureCreatedAsync();
+                Log.Information("Check if DB already exist, else add Migration or Create DB ...");
+                await context.Database.MigrateAsync();
                 Log.Information("Check DB Connection ...");
-                if (dbcontr.CheckConnection())
+                if (dbcontr.CheckConnection(context))
                 {
                     Log.Information("... success");
-                    Log.Information("Add Migration or Create DB ...");
-                    await context.Database.MigrateAsync();
                 }
                 else
                 {
@@ -48,56 +54,65 @@ namespace NodeMonitor
             catch (Exception e)
             {
                 Log.Fatal(e, "There was a problem adding the migration or Creating the DB");
+                var count = 0;
+                do
+                {
+                    Log.Information(e,$"Try again to connect to the DB each {1} seconds for {2} times", dbConnectretryGap, dbConnectretryNumber);
+                    System.Threading.Thread.Sleep(dbConnectretryGap*1000);
+                    await context.Database.MigrateAsync();
+                    count++;
+                } while (count <= dbConnectretryNumber);
+                count = 0;
                 Log.CloseAndFlush();
                 return;
             }
 
-            // Check DB connection and start test with testdata
-            try
-            {
-                Log.Information("Check DB Connection ...");
-                if (dbcontr.CheckConnection())
-                {
-                    Log.Information("... success");
+            //// Check DB connection and start test with testdata
+            //try
+            //{
+            //    Log.Information("Check DB Connection ...");
+            //    if (dbcontr.CheckConnection(context))
+            //    {
+            //        Log.Information("... success");
 
-                    // starte Debugtest
-                    Testdata.CreateTestdata();
-                    CreateDefaultTableValues.CreateData();
-                    ThreefoldApiUriEntity NodesUri = null;
-                    ThreefoldApiUriEntity FarmsUri = null;
-                    Log.Information("Test getting Nodes and Farms via threefoldApi and save them into DB");
-                    NodesUri = context.ThreefoldApiUris.Single(n => n.Name == "AllNodes");
-                    FarmsUri = context.ThreefoldApiUris.Single(n => n.Name == "AllFarms");
-                    JsonToEntity.AddFarmList(DeserealizeJson.CheckUriForFarmListAndGetJson(FarmsUri));
-                    JsonToEntity.AddNodeList(DeserealizeJson.CheckUriForNodeListAndGetJson(NodesUri));
-                }
-                else
-                {
-                    Log.Fatal("There was a problem connecting the DB");
-                };
+            //        // starte Debugtest
+            //        Testdata.CreateTestdata();
+            //        CreateDefaultTableValues.CreateData();
+            //        ThreefoldApiUriEntity NodesUri = null;
+            //        ThreefoldApiUriEntity FarmsUri = null;
+            //        Log.Information("Test getting Nodes and Farms via threefoldApi and save them into DB");
+            //        NodesUri = context.ThreefoldApiUris.Single(n => n.Name == "AllNodes");
+            //        FarmsUri = context.ThreefoldApiUris.Single(n => n.Name == "AllFarms");
+            //        JsonToEntity.AddFarmList(DeserealizeJson.CheckUriForFarmListAndGetJson(FarmsUri));
+            //        JsonToEntity.AddNodeList(DeserealizeJson.CheckUriForNodeListAndGetJson(NodesUri));
+            //    }
+            //    else
+            //    {
+            //        Log.Fatal("There was a problem connecting the DB");
+            //    };
 
-            }
-            catch (Exception e)
-            {
-                Log.Fatal(e, "There was a problem with the testrun");
-                Log.CloseAndFlush();
-                return;
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    Log.Fatal(e, "There was a problem with the testrun");
+            //    Log.CloseAndFlush();
+            //    return;
+            //}
 
             // Start all Services
             try
             {
                 Log.Information("Starting up the services");
 
-                if (AppConfig.ReadSetting("SignalR_ServerIp") == "localhost")
+                if (AppConfig.ReadSetting<string>("SignalR_ServerIp") == "localhost")
                 {
                     Log.Information(" bind to Ip {0}", "localhost");
                 }
                 else
                 {
-                    Log.Information(" bind to Ip {0}", IPAddress.Parse(AppConfig.ReadSetting("SignalR_ServerIp")));
+                    Log.Information(" bind to Ip {0}", IPAddress.Parse(AppConfig.ReadSetting<string>("SignalR_ServerIp")));
                 }
-                Log.Information(" bind to Port {0}", Int32.Parse(AppConfig.ReadSetting("SignalR_ServerPort")));
+                Log.Information(" bind to Port {0}", AppConfig.ReadSetting<int>("SignalR_ServerPort"));
                 CreateHostBuilder(args).Build().Run();
             }
             catch (Exception e)
@@ -132,11 +147,11 @@ namespace NodeMonitor
             .UseSerilog()
             .ConfigureWebHostDefaults(webBuilder =>
             {
-                string address = AppConfig.ReadSetting("SignalR_ServerIp");
-                string port = AppConfig.ReadSetting("SignalR_ServerPort");
-                string httpsOn = AppConfig.ReadSetting("SignalR_HttpsOn");
+                string address = AppConfig.ReadSetting<string>("SignalR_ServerIp");
+                int port = AppConfig.ReadSetting<int>("SignalR_ServerPort");
+                bool httpsOn = AppConfig.ReadSetting<bool>("SignalR_HttpsOn");
                 string url = "http://" + address + ":" + port;
-                if (httpsOn == "true")
+                if (httpsOn)
                 {
                     url = "https://" + address + ":" + port;
                 }
