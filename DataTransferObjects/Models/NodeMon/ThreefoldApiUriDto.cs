@@ -1,4 +1,4 @@
-﻿namespace DataTransferObjects.NodeMon
+﻿namespace DataTransferObjects.Models.NodeMon
 {
     public class ThreefoldApiUriDto
     {

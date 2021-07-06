@@ -1,0 +1,55 @@
+version: '3.4'
+
+services:
+  nodemonitor:
+    image: nodemonitor:dev
+    build:
+      target: base
+      labels:
+        com.microsoft.created-by: "visual-studio"
+        com.microsoft.visual-studio.project-name: "NodeMonitor"
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      - ASPNETCORE_LOGGING__CONSOLE__DISABLECOLORS=true
+      #- NUGET_FALLBACK_PACKAGES=$container_paths_to_fallback_packages_nodemonitor$
+    volumes:
+      - C:\flowTFS\softwareentwicklung\c-sharp-projects\omniflow_services\NodeMonitor:/app
+      - C:\flowTFS\softwareentwicklung\c-sharp-projects\omniflow_services:/src
+      - C:\Users\flow\vsdbg\vs2017u5:/remote_debugger:rw
+#$nuget_volume_mapping_nodemonitor$
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+
+    entrypoint: tail -f /dev/null
+    labels:
+      com.microsoft.visualstudio.debuggee.program: "dotnet"
+      #com.microsoft.visualstudio.debuggee.arguments: " $debuggee_arguments_probing_paths_nodemonitor$ \"/app/bin/Debug/net5.0/NodeMonitor.dll\""
+      com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
+      com.microsoft.visualstudio.debuggee.killprogram: "/bin/sh -c \"if PID=$$(pidof dotnet); then kill $$PID; fi\""
+    tty: true
+  webui.server:
+    image: webuiserver:dev
+    build:
+      target: base
+      labels:
+        com.microsoft.created-by: "visual-studio"
+        com.microsoft.visual-studio.project-name: "WebUI.Server"
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      - ASPNETCORE_LOGGING__CONSOLE__DISABLECOLORS=true
+      #- NUGET_FALLBACK_PACKAGES=$container_paths_to_fallback_packages_webui.server$
+    volumes:
+      - C:\flowTFS\softwareentwicklung\c-sharp-projects\omniflow_services\WebUI\Server:/app
+      - C:\flowTFS\softwareentwicklung\c-sharp-projects\omniflow_services:/src
+      - C:\Users\flow\vsdbg\vs2017u5:/remote_debugger:rw
+#$nuget_volume_mapping_webui.server$
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+
+    entrypoint: tail -f /dev/null
+    labels:
+      com.microsoft.visualstudio.debuggee.program: "dotnet"
+      #com.microsoft.visualstudio.debuggee.arguments: " $debuggee_arguments_probing_paths_webui.server$ \"/app/bin/Debug/net5.0/WebUI.Server.dll\""
+      com.microsoft.visualstudio.debuggee.workingdirectory: "/app"
+      com.microsoft.visualstudio.debuggee.killprogram: "/bin/sh -c \"if PID=$$(pidof dotnet); then kill $$PID; fi\""
+    tty: true

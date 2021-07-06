@@ -15,8 +15,9 @@ using NodeMonitor.Models;
 using System.Net;
 using NodeMonitor.Controller;
 using AutoMapper;
-using CommonLib;
 using CommonLib.Toolsets;
+using DatabaseLib.Entities.NodeMonEntities;
+using NodeMonitor.API.Client;
 
 namespace NodeMonitor
 {
@@ -49,7 +50,7 @@ namespace NodeMonitor
                 else
                 {
                     Log.Fatal("There was a problem connecting the DB");
-                };
+                }
             }
             catch (Exception e)
             {
@@ -57,62 +58,21 @@ namespace NodeMonitor
                 var count = 0;
                 do
                 {
-                    Log.Information(e,$"Try again to connect to the DB each {1} seconds for {2} times", dbConnectretryGap, dbConnectretryNumber);
-                    System.Threading.Thread.Sleep(dbConnectretryGap*1000);
+                    Log.Information(e, "Try again to connect to the DB each {1} seconds for {2} times",dbConnectretryGap, dbConnectretryNumber);
+                    System.Threading.Thread.Sleep(dbConnectretryGap * 1000);
                     await context.Database.MigrateAsync();
                     count++;
                 } while (count <= dbConnectretryNumber);
+
                 count = 0;
                 Log.CloseAndFlush();
                 return;
             }
 
-            //// Check DB connection and start test with testdata
-            //try
-            //{
-            //    Log.Information("Check DB Connection ...");
-            //    if (dbcontr.CheckConnection(context))
-            //    {
-            //        Log.Information("... success");
-
-            //        // starte Debugtest
-            //        Testdata.CreateTestdata();
-            //        CreateDefaultTableValues.CreateData();
-            //        ThreefoldApiUriEntity NodesUri = null;
-            //        ThreefoldApiUriEntity FarmsUri = null;
-            //        Log.Information("Test getting Nodes and Farms via threefoldApi and save them into DB");
-            //        NodesUri = context.ThreefoldApiUris.Single(n => n.Name == "AllNodes");
-            //        FarmsUri = context.ThreefoldApiUris.Single(n => n.Name == "AllFarms");
-            //        JsonToEntity.AddFarmList(DeserealizeJson.CheckUriForFarmListAndGetJson(FarmsUri));
-            //        JsonToEntity.AddNodeList(DeserealizeJson.CheckUriForNodeListAndGetJson(NodesUri));
-            //    }
-            //    else
-            //    {
-            //        Log.Fatal("There was a problem connecting the DB");
-            //    };
-
-            //}
-            //catch (Exception e)
-            //{
-            //    Log.Fatal(e, "There was a problem with the testrun");
-            //    Log.CloseAndFlush();
-            //    return;
-            //}
 
             // Start all Services
             try
             {
-                Log.Information("Starting up the services");
-
-                if (AppConfig.ReadSetting<string>("SignalR_ServerIp") == "localhost")
-                {
-                    Log.Information(" bind to Ip {0}", "localhost");
-                }
-                else
-                {
-                    Log.Information(" bind to Ip {0}", IPAddress.Parse(AppConfig.ReadSetting<string>("SignalR_ServerIp")));
-                }
-                Log.Information(" bind to Port {0}", AppConfig.ReadSetting<int>("SignalR_ServerPort"));
                 CreateHostBuilder(args).Build().Run();
             }
             catch (Exception e)
@@ -121,19 +81,52 @@ namespace NodeMonitor
                 Log.CloseAndFlush();
                 return;
             }
+
+            // Check DB connection and start test with testdata
+            try
+
+            {
+                Log.Information("Check DB Connection ...");
+                if (dbcontr.CheckConnection(context))
+                {
+                    Log.Information("... success");
+                    TFPublicEntityController _tfPublicEntityController = new TFPublicEntityController();
+                    TFPublicWebApiClientController _tfPublicWebApiClientController = new TFPublicWebApiClientController(new ThreefoldPublicApiClient());
+                    // starte Debugtest
+                    Testdata.CreateTestdata();
+                    CreateDefaultTableValues.CreateData();
+                    ThreefoldApiUriEntity NodesUri = null;
+                    ThreefoldApiUriEntity FarmsUri = null;
+                    Log.Information("Test getting Nodes and Farms via threefoldApi and save them into DB");
+                    NodesUri = context.ThreefoldApiUris.Single(n => n.Name == "AllNodes");
+                    FarmsUri = context.ThreefoldApiUris.Single(n => n.Name == "AllFarms");
+                    _tfPublicEntityController.AddFarmList(_tfPublicWebApiClientController.GetFarmListAsync().Result);
+                    _tfPublicEntityController.AddNodeList(_tfPublicWebApiClientController.GetNodeListAsync().Result);
+                }
+                else
+                {
+                    Log.Fatal("There was a problem connecting the DB");
+                };
+
+            }
+            catch (Exception e)
+            {
+                Log.Fatal(e, "There was a problem with the testrun");
+                Log.CloseAndFlush();
+                return;
+            }
         }
+//  Bootup
+// 1. Datenbank Anlegen
+// 2. Generate ServiceID (in DB oder Reg)
+// 3. Settings aus DB laden
 
-        //  Bootup
-        // 1. Datenbank Anlegen
-        // 2. Generate ServiceID (in DB oder Reg)
-        // 3. Settings aus DB laden
+//  Running
+// 4. Tasks abarbeiten
+//        -> von Settings oder von SchedulesEntity
+// 5. SignalR anfragen bearbeiten
 
-        //  Running
-        // 4. Tasks abarbeiten
-        //        -> von Settings oder von SchedulesEntity
-        // 5. SignalR anfragen bearbeiten
-
-        public static IHostBuilder CreateHostBuilder(string[] args)
+public static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args)
             // Unter Linux:
@@ -147,17 +140,9 @@ namespace NodeMonitor
             .UseSerilog()
             .ConfigureWebHostDefaults(webBuilder =>
             {
-                string address = AppConfig.ReadSetting<string>("SignalR_ServerIp");
-                int port = AppConfig.ReadSetting<int>("SignalR_ServerPort");
-                bool httpsOn = AppConfig.ReadSetting<bool>("SignalR_HttpsOn");
-                string url = "http://" + address + ":" + port;
-                if (httpsOn)
-                {
-                    url = "https://" + address + ":" + port;
-                }
-
+                //webBuilder.UseUrls(grpcUri);
                 webBuilder.UseStartup<Startup>();
-                webBuilder.UseUrls(url);
+
                 //webBuilder.UseKestrel(opts =>
                 //{
                 //    if (AppConfig.ReadSetting("SignalR_ServerIp") == "localhost")

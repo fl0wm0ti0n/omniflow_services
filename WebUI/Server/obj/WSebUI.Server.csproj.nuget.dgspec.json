@@ -1,0 +1,228 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\flowTFS\\softwareentwicklung\\c-sharp-projects\\omniflow_services\\WebUI\\Server\\WSebUI.Server.csproj": {}
+  },
+  "projects": {
+    "C:\\flowTFS\\softwareentwicklung\\c-sharp-projects\\omniflow_services\\WebUI\\Client\\WebUI.Client.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\flowTFS\\softwareentwicklung\\c-sharp-projects\\omniflow_services\\WebUI\\Client\\WebUI.Client.csproj",
+        "projectName": "WebUI.Client",
+        "projectPath": "C:\\flowTFS\\softwareentwicklung\\c-sharp-projects\\omniflow_services\\WebUI\\Client\\WebUI.Client.csproj",
+        "packagesPath": "C:\\Users\\flow\\.nuget\\packages\\",
+        "outputPath": "C:\\flowTFS\\softwareentwicklung\\c-sharp-projects\\omniflow_services\\WebUI\\Client\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\flow\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.1": {
+            "projectReferences": {
+              "C:\\flowTFS\\softwareentwicklung\\c-sharp-projects\\omniflow_services\\WebUI\\Shared\\WebUI.Shared.csproj": {
+                "projectPath": "C:\\flowTFS\\softwareentwicklung\\c-sharp-projects\\omniflow_services\\WebUI\\Shared\\WebUI.Shared.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.1": {
+          "dependencies": {
+            "Microsoft.AspNetCore.Blazor": {
+              "target": "Package",
+              "version": "[3.2.0-preview1.20073.1, )"
+            },
+            "Microsoft.AspNetCore.Blazor.Build": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.2.0-preview1.20073.1, )"
+            },
+            "Microsoft.AspNetCore.Blazor.DevServer": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[3.2.0-preview1.20073.1, )"
+            },
+            "Microsoft.AspNetCore.Blazor.HttpClient": {
+              "target": "Package",
+              "version": "[3.2.0-preview1.20073.1, )"
+            },
+            "Toolbelt.Blazor.LoadingBar": {
+              "target": "Package",
+              "version": "[10.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "NETStandard.Library": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\flowTFS\\softwareentwicklung\\c-sharp-projects\\omniflow_services\\WebUI\\Server\\WSebUI.Server.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\flowTFS\\softwareentwicklung\\c-sharp-projects\\omniflow_services\\WebUI\\Server\\WSebUI.Server.csproj",
+        "projectName": "WSebUI.Server",
+        "projectPath": "C:\\flowTFS\\softwareentwicklung\\c-sharp-projects\\omniflow_services\\WebUI\\Server\\WSebUI.Server.csproj",
+        "packagesPath": "C:\\Users\\flow\\.nuget\\packages\\",
+        "outputPath": "C:\\flowTFS\\softwareentwicklung\\c-sharp-projects\\omniflow_services\\WebUI\\Server\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\flow\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "projectReferences": {
+              "C:\\flowTFS\\softwareentwicklung\\c-sharp-projects\\omniflow_services\\WebUI\\Client\\WebUI.Client.csproj": {
+                "projectPath": "C:\\flowTFS\\softwareentwicklung\\c-sharp-projects\\omniflow_services\\WebUI\\Client\\WebUI.Client.csproj"
+              },
+              "C:\\flowTFS\\softwareentwicklung\\c-sharp-projects\\omniflow_services\\WebUI\\Shared\\WebUI.Shared.csproj": {
+                "projectPath": "C:\\flowTFS\\softwareentwicklung\\c-sharp-projects\\omniflow_services\\WebUI\\Shared\\WebUI.Shared.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "dependencies": {
+            "Microsoft.AspNetCore.Blazor.Server": {
+              "target": "Package",
+              "version": "[3.2.0-preview1.20073.1, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[3.1.1, )"
+            },
+            "Toolbelt.Blazor.LoadingBar": {
+              "target": "Package",
+              "version": "[10.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\flowTFS\\softwareentwicklung\\c-sharp-projects\\omniflow_services\\WebUI\\Shared\\WebUI.Shared.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\flowTFS\\softwareentwicklung\\c-sharp-projects\\omniflow_services\\WebUI\\Shared\\WebUI.Shared.csproj",
+        "projectName": "WebUI.Shared",
+        "projectPath": "C:\\flowTFS\\softwareentwicklung\\c-sharp-projects\\omniflow_services\\WebUI\\Shared\\WebUI.Shared.csproj",
+        "packagesPath": "C:\\Users\\flow\\.nuget\\packages\\",
+        "outputPath": "C:\\flowTFS\\softwareentwicklung\\c-sharp-projects\\omniflow_services\\WebUI\\Shared\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\flow\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.1": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.1": {
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "NETStandard.Library": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

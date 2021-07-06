@@ -1,0 +1,26 @@
+{
+  "profiles": {
+    "CryptoBot": {
+      "commandName": "Project",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "applicationUrl": "https://CryptoBot:55003;http://CryptoBot:55002",
+      "environmentVariables": {
+        "ASPNETCORE_URLS": "https://+:443;http://+:80",
+        "ASPNETCORE_HTTPS_PORT": "55003",
+        "ASPNETCORE_HTTP_PORT": "55002",
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "publishAllPorts": true,
+      "httpPort": 55002,
+      "useSSL": true,
+      "sslPort": 55003
+    }
+  }
+}

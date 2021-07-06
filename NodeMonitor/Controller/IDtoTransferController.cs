@@ -1,5 +1,5 @@
-﻿using DataTransferObjects.NodeMon;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using DataTransferObjects.Models.NodeMon;
 
 namespace NodeMonitor.Controller
 {

@@ -1,8 +1,5 @@
 ﻿using AutoMapper;
-using DataTransferObjects.NodeMon;
 using InterfacesLib;
-using Microsoft.AspNetCore.SignalR;
-using NodeMonitor.API.SignalR;
 using NodeMonitor.Models;
 using Serilog;
 using System;
@@ -10,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DataTransferObjects.Generic;
+using DataTransferObjects.Models.NodeMon;
 
 
 namespace NodeMonitor.Controller

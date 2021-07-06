@@ -38,9 +38,9 @@ namespace CommonLib.Toolsets
                 }
                 return settingDict;
             }
-            catch (ConfigurationErrorsException)
+            catch (ConfigurationErrorsException e)
             {
-                Log.Warning("Error reading app settings");
+                Log.Warning(e,"Error reading app settings");
                 return null;
             }
         }
@@ -65,7 +65,7 @@ namespace CommonLib.Toolsets
             }
             catch (Exception e)
             {
-                Log.Warning("Error reading app settings");
+                Log.Warning(e,"Error reading app settings");
                 return (T)(object)null;
             }
         }
@@ -87,9 +87,9 @@ namespace CommonLib.Toolsets
                 configFile.Save(ConfigurationSaveMode.Modified);
                 ConfigurationManager.RefreshSection(configFile.AppSettings.SectionInformation.Name);
             }
-            catch (ConfigurationErrorsException)
+            catch (ConfigurationErrorsException e)
             {
-                Log.Warning("Error writing app settings");
+                Log.Warning(e,"Error writing app settings");
             }
         }
     }

@@ -4,6 +4,7 @@ using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DatabaseLib.Entities.NodeMonEntities;
 
 namespace NodeMonitor.Default
 {

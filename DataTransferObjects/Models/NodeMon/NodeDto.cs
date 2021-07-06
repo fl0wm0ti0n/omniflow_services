@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DataTransferObjects.NodeMon
+namespace DataTransferObjects.Models.NodeMon
 {
     public partial class NodeDto
     {

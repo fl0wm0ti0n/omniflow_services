@@ -2,7 +2,9 @@ using AutoMapper;
 using NUnit.Framework;
 using NodeMonitor;
 using DatabaseLib.Entities;
-using DataTransferObjects.NodeMon;
+using DatabaseLib.Entities.GenericEntities;
+using DatabaseLib.Entities.NodeMonEntities;
+using DataTransferObjects.Models.NodeMon;
 
 namespace NodeMonitor.Tests
 {
@@ -59,9 +61,9 @@ namespace NodeMonitor.Tests
                 cfg.CreateMap<FarmerEntity, FarmerDto>();
 
                 // Schedules Map
-                cfg.CreateMap<NodeMonSchedulesEntity, NodeMonSchedulesDto>();
-                cfg.CreateMap<NodeMonScheduleDaysEntity, NodeMonScheduleDaysDto>();
-                cfg.CreateMap<NodeMonSchedulesToDaysEntity, NodeMonSchedulesToDaysDto>();
+                cfg.CreateMap<SchedulesEntity, SchedulesDto>();
+                cfg.CreateMap<ScheduleDaysEntity, ScheduleDaysDto>();
+                cfg.CreateMap<SchedulesToDaysEntity, SchedulesToDaysDto>();
 
                 // Uri Map
                 cfg.CreateMap<ThreefoldApiUriEntity, ThreefoldApiUriDto>();

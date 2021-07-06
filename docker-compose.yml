@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  webui.server:
+    image: ${DOCKER_REGISTRY-}webuiserver
+    build:
+      context: .
+      dockerfile: WebUI/Server/Dockerfile
+
+  nodemonitor:
+    image: ${DOCKER_REGISTRY-}nodemonitor
+    build:
+      context: .
+      dockerfile: NodeMonitor/Dockerfile
+

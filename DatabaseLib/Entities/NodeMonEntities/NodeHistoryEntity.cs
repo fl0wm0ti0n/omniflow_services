@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
-using AutoMapper.Configuration.Annotations;
 
-namespace DatabaseLib.Entities
+namespace DatabaseLib.Entities.NodeMonEntities
 {
     [Table("nodemon_NodeHistory")]
     public class NodeHistoryEntity

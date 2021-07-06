@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
-using Microsoft.EntityFrameworkCore;
-using AutoMapper.Configuration.Annotations;
 
-namespace DatabaseLib.Entities
+namespace DatabaseLib.Entities.NodeMonEntities
 {
     [Table("nodemon_Node")]
     public partial class NodeEntity

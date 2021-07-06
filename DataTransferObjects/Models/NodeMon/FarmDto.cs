@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace DataTransferObjects.NodeMon
+namespace DataTransferObjects.Models.NodeMon
 {
     public class FarmDto
     {

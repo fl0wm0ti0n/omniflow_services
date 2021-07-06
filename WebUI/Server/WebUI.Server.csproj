@@ -1,40 +1,72 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <UserSecretsId>2361b33a-5c6b-4ac5-aeb3-1d7ba4dedea3</UserSecretsId>
-    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileRunArguments>-p 55005:55005</DockerfileRunArguments>
+    <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>dotnet-WebUIServer-2361b33a-5c6b-4ac5-aeb3-1d7ba4dedea3</UserSecretsId>
     <OutputType>Exe</OutputType>
-    <StartupObject />
+    <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
+    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Services\**" />
-    <Content Remove="Services\**" />
-    <EmbeddedResource Remove="Services\**" />
-    <None Remove="Services\**" />
+    <Compile Remove="deprecated\**" />
+    <Compile Remove="google\**" />
+    <Content Remove="deprecated\**" />
+    <Content Remove="google\**" />
+    <EmbeddedResource Remove="deprecated\**" />
+    <EmbeddedResource Remove="google\**" />
+    <None Remove="deprecated\**" />
+    <None Remove="google\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Blazor.Server" Version="3.2.0-preview1.20073.1" />
-    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="3.1.5" />
-    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.10" />
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.3" />
+    <Compile Remove="Controllers\NodeController.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Protos\ThreefoldPublic.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.17.0" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.37.0" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.37.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.37.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="5.0.6" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="Serilog.AspNetCore" Version="4.1.0" />
-    <PackageReference Include="Toolbelt.Blazor.LoadingBar" Version="10.0.0" />
+    <PackageReference Include="Toolbelt.Blazor.LoadingBar" Version="12.1.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\CommonLib\CommonLib.csproj" />
     <ProjectReference Include="..\..\DataTransferObjects\DataTransferObjects.csproj" />
     <ProjectReference Include="..\..\InterfacesLib\InterfacesLib.csproj" />
+    <ProjectReference Include="..\..\Models\Models.csproj" />
     <ProjectReference Include="..\Client\WebUI.Client.csproj" />
     <ProjectReference Include="..\Shared\WebUI.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Controllers\" />
+    <Folder Include="Services\" />
     <Folder Include="tmp\" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Pages\Error.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="Protos\ThreefoldPublic.proto" GrpcServices="Client" />
+  </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="" /></VisualStudio></ProjectExtensions>
 
 </Project>

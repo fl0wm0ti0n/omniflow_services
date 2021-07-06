@@ -6,7 +6,10 @@ using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using NodeMonitor.API.SignalR;
+using Microsoft.OpenApi.Models;
+using NodeMonitor.API.Client;
+using NodeMonitor.Controller;
+using NodeMonitor.Services;
 using Serilog;
 
 namespace NodeMonitor
@@ -21,29 +24,53 @@ namespace NodeMonitor
 
         public void ConfigureServices(IServiceCollection services)
         {
-            // Start SignalR
+            // add Grpc and Swagger
             try
             {
-                Log.Information("Starting up SignalR Server");
+                Log.Information("Starting Grpc and GrpcsSwagger...");
                 services.AddSignalR();
+
+                services.AddGrpcHttpApi();
+                services.AddGrpc();
+
+                services.AddSwaggerGen(c =>
+                {
+                    c.SwaggerDoc("v1", new OpenApiInfo { Title = "NodeMon Grpc-WebApi", Version = "v1" });
+                });
+                services.AddGrpcSwagger();
             }
             catch (Exception e)
             {
-                Log.Fatal(e, "There was a problem starting SignalR Server");
-                return;
+                Log.Fatal(e, "There was a problem starting Grpc Service or GrpcSwagger");
+                throw;
             }
 
             // Start all Services
             try
             {
-                Log.Information("Starting up AutoMapper");
+                Log.Information("Starting up AutoMapper...");
 
-                services.AddAutoMapper(c => c.AddProfile<nmMapperConfig>(), typeof(Startup));
+                services.AddAutoMapper(c => c.AddProfile<MapperConfig>(), typeof(Startup));
             }
             catch (Exception e)
             {
                 Log.Fatal(e, "There was a problem starting AutoMapper");
-                return;
+                throw;
+            }
+
+            // Add DI Scoped
+            try
+            {
+                Log.Information("Add Scoped DI...");
+                services.AddScoped<ITFPublicGrpcServiceController, TFPublicGrpcServiceController>();
+                services.AddScoped<IThreefoldPublicApiClient, ThreefoldPublicApiClient>();
+                services.AddScoped<ITFPublicWebApiClientController, TFPublicWebApiClientController>();
+                services.AddScoped<ITFPublicEntityController, TFPublicEntityController>();
+            }
+            catch (Exception e)
+            {
+                Log.Fatal(e, "There was a problem adding Scoped DI");
+                throw;
             }
         }
 
@@ -58,18 +85,25 @@ namespace NodeMonitor
             // Add Endpoints all Services
             try
             {
-                Log.Information("Add Hub Route '/hubs/nodemon'");
+                Log.Information("Add Endpoints...");
                 app.UseRouting();
                 app.UseEndpoints(endpoints =>
                 {
-                    endpoints.MapHub<NodeMonHub>("/hubs/nodemon");
+                    endpoints.MapGrpcService<ThreefoldPublicGrpcService>();
+                });
+
+                app.UseSwagger();
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint("/swagger/v1/swagger.json", "NodeMon Grpc-WebApi V1");
                 });
             }
             catch (Exception e)
             {
-                Log.Fatal(e, "There was a problem Add Hub Route '/hubs/nodemon'");
-                return;
+                Log.Fatal(e, "There was a problem Add one or more of Endpoints.");
+                throw;
             }
+
         }
     }
 }

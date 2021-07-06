@@ -1,8 +1,8 @@
 ﻿using DataTransferObjects.Generic;
-using DataTransferObjects.NodeMon;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using DataTransferObjects.Models.NodeMon;
 
 namespace InterfacesLib
 {

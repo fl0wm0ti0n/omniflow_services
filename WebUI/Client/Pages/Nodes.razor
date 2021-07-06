@@ -1,5 +1,5 @@
 ﻿@page "/nodes"
-@using DataTransferObjects.NodeMon
+@using DataTransferObjects.Models.NodeMon
 @inject HttpClient Http
 
 <h3>Nodes</h3>
@@ -100,7 +100,8 @@ else
     {
         isLoading = true;
         await Task.Delay(2000); // Wartezeit simulieren damit diese sichtbar ist.
-        nodes = await Http.GetJsonAsync<List<NodeDto>>(@"node\all");
+        nodes = await Http.GetFromJsonAsync<List<NodeDto>>(@"node\all");
+
         isLoading = false;
     }
 }

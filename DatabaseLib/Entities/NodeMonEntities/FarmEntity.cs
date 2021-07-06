@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
-namespace DatabaseLib.Entities
+namespace DatabaseLib.Entities.NodeMonEntities
 {
     [Table("nodemon_Farm")]
     public class FarmEntity

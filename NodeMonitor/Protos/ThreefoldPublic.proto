@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+option csharp_namespace = "NodeMonitor.Protos";
+
+import "google/api/annotations.proto";
+
+service ThreefoldPublicGrpc {
+
+	//Nodes
+	rpc GetNode (NodeLookupRequest) returns (NodeGrpcModel) {
+		option (google.api.http) = {
+			get: "/api/v1/tf/nodes/{nodeId}"
+		};
+	}
+
+	rpc GetListOfNodes (NodeListRequest) returns (NodeGrpcList) {
+		option (google.api.http) = {
+			get: "/api/v1/tf/nodes"
+		};
+	}
+
+	rpc GetListOfNodesStream (NodeStreamRequest) returns (stream NodeGrpcList) {
+	}
+
+	//Farms
+	rpc GetFarm (FarmLookupRequest) returns (FarmGrpcModel) {
+		option (google.api.http) = {
+			get: "/api/v1/tf/farm/{farmId}"
+		};
+	}
+
+	rpc GetListOfFarms (FarmListRequest) returns (FarmGrpcList) {
+		option (google.api.http) = {
+			get: "/api/v1/tf/farm"
+		};
+	}
+	 
+	rpc GetListOfFarmsStream (FarmStreamRequest) returns (stream FarmGrpcList) {
+	}
+}
+
+// Nodes
+message NodeListRequest{
+}
+
+message NodeStreamRequest{
+}
+
+message NodeLookupRequest {
+	int32 nodeId = 1;
+}
+
+message NodeGrpcList {
+	repeated NodeGrpcModel NodeGrpcModel = 1;
+}
+
+message NodeGrpcStream {
+	NodeGrpcModel NodeGrpcModel = 1;
+}
+
+message NodeGrpcModel {
+}
+
+// Farms
+message FarmListRequest{
+}
+
+message FarmStreamRequest{
+}
+
+message FarmLookupRequest {
+	int32 farmId = 1;
+}
+
+message FarmGrpcList {
+	repeated FarmGrpcModel FarmGrpcModel = 1;
+}
+
+message FarmGrpcStream {
+	FarmGrpcModel FarmGrpcModel = 1;
+}
+
+message FarmGrpcModel {
+}

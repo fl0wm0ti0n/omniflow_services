@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 
-namespace DatabaseLib.Entities
+namespace DatabaseLib.Entities.NodeMonEntities
 {
     [Table("nodemon_TokenHistory")]
     public class TokenHistoryEntity
